@@ -1,0 +1,73 @@
+#summary List of Escape Code supported by nnnutils_console
+
+= Escape Code =
+
+This page indicate the list of escape code supported by the nnnutils_console terminal.
+
+== [http://en.wikipedia.org/wiki/ANSI_escape_code Ansi Code] ==
+
+|| *Code* || Description || Observations/Not standard ||
+|| ESC [ _n_ A || Move the cursor to _n_ lines up || ||
+|| ESC [ _n_ B || Move the cursor to _n_ lines down || ||
+|| ESC [ _n_ C || Move the cursor to _n_ columns right || ||
+|| ESC [ _n_ D || Move the cursor to _n_ columns left || ||
+|| ESC [ _n_ E || Move the cursor to the beginning of the _n_ lines down || ||
+|| ESC [ _n_ F || Move the cursor to the beginning of the _n_ lines up || ||
+|| ESC [ _n_ G || Move the cursor to column _n_ || ||
+|| ESC [ _r_ ; _c_ H || Move the cursor to _r_ row and _c_ column || ||
+|| ESC [ 0 J || Clear from cursor to end of screen || ||
+|| ESC [ 1 J || Clear from cursor to beginning of the screen || ||
+|| ESC [ 2 J || Clear entire screen || Move to 0,0 after like ANSI.SYS ||
+|| ESC [ 0 K || Clear from cursor to end of line || ||
+|| ESC [ 1 K || Clear from cursor to beginning of line || ||
+|| ESC [ 2 K || Clear entire line || ||
+|| ESC [ _r_ ; _c_ f || Move the cursor to _r_ row and _c_ column || ||
+|| ESC [ 0 m || Reset all attributes || ||
+|| ESC [ 1 m || Bright on || ||
+|| ESC [ 4 m || Underline || Single line ||
+|| ESC [ 5 m || Blink || Not really sure if it is less than 150 per minute ||
+|| ESC [ 7 m || Negative on || Swap foreground and background ||
+|| ESC [ 22 m || Bright off || ||
+|| ESC [ 24 m || Underline off || ||
+|| ESC [ 25 m || Blink off || ||
+|| ESC [ 27 m || Negative off || Swap foreground and background ||
+|| ESC [ 30 m || Text Black || <font color="#000000">normal</font>/<font color="#555555">bright</font> ||
+|| ESC [ 31 m || Text Red || <font color="#AA0000">normal</font>/<font color="#FF5555">bright</font> ||
+|| ESC [ 32 m || Text Green || <font color="#00AA00">normal</font>/<font color="#55FF55">bright</font> ||
+|| ESC [ 33 m || Text Yellow || <font color="#AA5500">normal</font>/<font color="#FFFF55">bright</font> ||
+|| ESC [ 34 m || Text Blue || <font color="#0000AA">normal</font>/<font color="#55FFFF">bright</font> ||
+|| ESC [ 35 m || Text Magenta || <font color="#AA00AA">normal</font>/<font color="#FF55FF">bright</font> ||
+|| ESC [ 36 m || Text Cyan || <font color="#00AAAA">normal</font>/<font color="#55FFFF">bright</font> ||
+|| ESC [ 37 m || Text White || <font color="#AAAAAA">normal</font>/<font color="#FFFFFF">bright</font> ||
+|| ESC [ 39 m || Default text color || ||
+|| ESC [ 40 m || Backgound Black || <font color="#000000">normal</font>/<font color="#555555">bright</font> ||
+|| ESC [ 41 m || Backgound Red || <font color="#AA0000">normal</font>/<font color="#FF5555">bright</font> ||
+|| ESC [ 42 m || Backgound Green || <font color="#00AA00">normal</font>/<font color="#55FF55">bright</font> ||
+|| ESC [ 43 m || Backgound Yellow || <font color="#AA5500">normal</font>/<font color="#FFFF55">bright</font> ||
+|| ESC [ 44 m || Backgound Blue || <font color="#0000AA">normal</font>/<font color="#55FFFF">bright</font> ||
+|| ESC [ 45 m || Backgound Magenta || <font color="#AA00AA">normal</font>/<font color="#FF55FF">bright</font> ||
+|| ESC [ 46 m || Backgound Cyan || <font color="#00AAAA">normal</font>/<font color="#55FFFF">bright</font> ||
+|| ESC [ 47 m || Backgound White || <font color="#AAAAAA">normal</font>/<font color="#FFFFFF">bright</font> ||
+|| ESC [ 49 m || Default background color || ||
+|| ESC [ s || Save cursor position || ||
+|| ESC [ u || Restore cursor position || ||
+
+== [http://invisible-island.net/xterm/ctlseqs/ctlseqs.html Xterm Code] ==
+
+|| *Code* || Description || Observations/Not standard ||
+|| ESC ] 0 ; title BEL || Set window title (and icon title) || Change 0 by 1 or 2 do the same ||
+|| ESC ] 0 ; title ESC \ || Set window title (and icon title) || Change 0 by 1 or 2 do the same ||
+|| ESC [ 1 t || Restoring the window to its original size || ||
+|| ESC [ 2 t || Reducing the window to an icon on the desktop || ||
+|| ESC [ 3 ; _x_ ; _y_ t || Move window to x,y || pixels coordinates ||
+|| ESC [ 4 ; _h_ ; _w_ t || Set width and height to _w_ and _h_ pixels || not standard : textarea + window ||
+|| ESC [ 4 ; _h_ ; t || Set height (pixels) || not standard : textarea + window ||
+|| ESC [ 4 ; ; _w_ t || Set width (pixels) || not standard : textarea + window ||
+|| ESC [ 4 ; 0 ; 0 t || Set width and height to display size || not standard : textarea + window ||
+|| ESC [ 5 t || Set window to front of others || ||
+|| ESC [ 6 t || Set window to back of others || ||
+|| ESC [ 7 t || force repaint || Not tested ||
+|| ESC [ 8 ; _h_ ; _w_ t || Set width and height to _w_ and _h_ characters || not standard : textarea + window ||
+|| ESC [ 8 ; _h_ ; t || Set height (characters) || not standard : textarea + window ||
+|| ESC [ 8 ; ; _w_ t || Set width (characters) || not standard : textarea + window ||
+|| ESC [ 8 ; 0 ; 0 t || Set width and height to display size || not standard : textarea + window ||

@@ -1,0 +1,50 @@
+#summary nnnadmin
+#labels Featured,nnnadmin
+
+= NNNADMIN =
+
+== Qu'est-ce que c'est? ==
+nnnadmin est un ensemble de scripts pour gérer facilement une solution logicielle.
+
+== Pourquoi? ==
+Il y a quelques années, j'ai eu à construire une plate-forme logicielle pour mon entreprise.
+Cette plate-forme a été faite avec des briques-produit (ldap, base de données, apache, etc.)
+J'avais un script shell monolithique pour démarrer et arrêter tous les produits.
+Il a bien fonctionné, mais il n'était pas facile d'ajouter un nouveau produit.
+nnnadmin est ma solution pour éviter ce problème.
+
+== Comment ça marche? ==
+Chaque bloc (module) est décrit par des scripts simples.
+  * Un script avec les fonctions de démarrage, d'arrêt et d'affichage de l'état,
+  * Un script de sauvegarde et de restauration,
+  * Un script pour vérifier les autorisations de fichiers et les corriger.
+
+Après le script *admin.sh* peut être utilisé pour démarrer, arrêter et visualiser l'état de chaque module, mais il sait aussi comment redémarrer le module (stop and start) et essayez de redémarrer (démarrage uniquement si le module est déjà en cours d'exécution).
+
+Le script *backup.sh* peut être utilisé pour importer ou exporter des données à partir de chaque module.
+
+Le script *check.sh* peut être utilisé pour réparer chaque module.
+
+
+=== Documentation ===
+==== Aide ====
+Vous pouvez utiliser l'option -? pour l'aide simple ou -h pour le manuel complet.
+
+==== Pages _man_ en Html (en Français) ====
+  * [https://nnnutils.googlecode.com/svn/nnnadmin/man/fr/admin.sh.1.html man admin.sh],
+  * [https://nnnutils.googlecode.com/svn/nnnadmin/man/fr/backup.sh.1.html man backup.sh],
+  * [https://nnnutils.googlecode.com/svn/nnnadmin/man/fr/check.sh.1.html man check.sh]
+
+== Licence ==
+La licence * lgpl3 * est utilisée ([https://code.google.com/p/nnnutils/source/browse/nnnadmin/lgpl-3.0.txt licence])
+Une copie de la licence a été incluse dans l'archive (lgpl-3.0.txt)
+
+
+== Installation ==
+Il vous suffit de décompresser [http://nnnutils.googlecode.com/files/nnnadmin-latest.tar.gz l'archive] dans un répertoire de votre choix.
+
+=== Optionnellement ===
+  * Vous pouvez copier le script supplémentaire _nnnadmin_completion_ dans /etc/bash_completion.d/,
+  *  Vous pouvez également copier les pages de manuel.
+
+Attention: LC_MESSAGES *ne doit pas* être copié. Le script trouve automatiquement les messages traduits à partir du répertoire du script.
