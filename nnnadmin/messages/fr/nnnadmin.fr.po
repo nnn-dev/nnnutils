@@ -1,0 +1,247 @@
+# ############################################################################## #
+# NNN utils (http://code.google.com/p/nnnutils/)                                 #
+# Copyright (C) 2010-2011 3Zen                                                   #
+#                                                                                #
+# This library is free software; you can redistribute it and/or                  #
+# modify it under the terms of the GNU Lesser General Public                     #
+# License as published by the Free Software Foundation; either                   #
+# version 2.1 of the License, or (at your option) any later version.             #
+#                                                                                #
+# This library is distributed in the hope that it will be useful,                #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of                 #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU              #
+# Lesser General Public License for more details.                                #
+#                                                                                #
+# You should have received a copy of the GNU Lesser General Public               #
+# License along with this library; if not, write to the Free Software            #
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA #
+# ############################################################################## #
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: nnnadmin 1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-01 00:24+0100\n"
+"PO-Revision-Date: 2012-12-01 00:24+0100\n"
+"Last-Translator: 3Zen <EMAIL@ADDRESS>\n"
+"Language-Team: 3Zen <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin.sh:57
+msgid "Error"
+msgstr "Erreur"
+
+#: admin.sh:81
+msgid "%s-%s by %s version %s\\n"
+msgstr "%s-%s par %s version %s\\n"
+
+#: admin.sh:87
+msgid "Syntax"
+msgstr "Syntaxe"
+
+#: admin.sh:90
+msgid "show the list of modules"
+msgstr "affiche la liste des modules"
+
+#: admin.sh:92
+msgid "repair (or check) the module"
+msgstr "répare (ou vérifie) le module"
+
+#: admin.sh:98
+msgid "start the module"
+msgstr "démarre le module"
+
+#: admin.sh:101
+msgid "show the status of this module"
+msgstr "affiche l'état du module"
+
+#: admin.sh:100
+msgid "stop the module"
+msgstr "arrête le module"
+
+#: admin.sh:102
+msgid "(re)start the module"
+msgstr "(re)démarre le module"
+
+msgid "same as restart (for LSB compatibility)"
+msgstr "comme restart (pour compatibilité LSB)"
+
+msgid "restart the module if it is launched"
+msgstr "redémarre le module s'il est lancé"
+
+
+#: admin.sh:105
+msgid "export save from the module"
+msgstr "exporte une sauvegarde"
+
+#: admin.sh:107
+msgid "import save to the module"
+msgstr "importe une sauvegarde"
+
+#: admin.sh:110
+msgid "opt is for options"
+msgstr "opt représente les options"
+
+#: admin.sh:112
+msgid "path of application configuration"
+msgstr "emplacement de la configuration de l'application"
+
+#: admin.sh:79
+msgid "directory of application modules"
+msgstr "répertoire des modules de l'application"
+
+#: admin.sh:117
+msgid "delete data before import"
+msgstr "supprime les données avant l'importation"
+
+#: admin.sh:120
+msgid "check only instead repair"
+msgstr "vérifie seulement mais ne répare pas"
+
+#: admin.sh:123
+msgid "show this help message"
+msgstr "affiche ce message d'aide"
+
+#: admin.sh:125
+msgid "show version"
+msgstr "affiche la version"
+
+#: admin.sh:126
+msgid "You can use -A nosys and/or -A allsys instead module :"
+msgstr "Vous pouvez utiliser -A nosys et/ou -A allsys au lieu de module :"
+
+#: admin.sh:127
+msgid " -A nosys    : all modules without      sys prefix"
+msgstr " -A nosys    : tous les modules sans      le préfixe sys"
+
+#: admin.sh:128
+msgid " -A allsys   : all modules without&with sys prefix"
+msgstr " -A allsys   : tous les modules même avec le préfixe sys"
+
+#: admin.sh:135
+msgid "Module"
+msgstr "Module"
+
+#: admin.sh:135
+msgid "Description"
+msgstr "Description"
+
+#: admin.sh:135
+msgid "Author"
+msgstr "Auteur"
+
+#: admin.sh:136
+msgid "Version"
+msgstr "Version"
+
+#: admin.sh:136
+msgid "Sys"
+msgstr "Sys"
+
+#: admin.sh:163
+msgid "show the manual"
+msgstr "affiche le manuel"
+
+#: admin.sh:167
+msgid "Failed"
+msgstr "Echec"
+
+#: admin.sh:178
+msgid "Starting"
+msgstr "Démarrage"
+
+#: admin.sh:181
+msgid "not stopped"
+msgstr "non arrété"
+
+#: admin.sh:188
+msgid "launch function for the module"
+msgstr "lance la fonction du module" 
+
+#: admin.sh:193
+msgid "Stopping"
+msgstr "Arrêt"
+
+#: admin.sh:196
+msgid "not started"
+msgstr "non démarré"
+
+#: admin.sh:212
+msgid "Running"
+msgstr "Démarré"
+
+#: admin.sh:213
+msgid "Dead. Check PID file"
+msgstr "Mort. Vérifiez le fichier PID"
+
+#: admin.sh:214
+msgid "Dead. Check lock file"
+msgstr "Mort. Vérifiez le fichier verrou"
+
+#: admin.sh:215
+msgid "To repair"
+msgstr "A réparer"
+
+#: admin.sh:219
+msgid "Stopped"
+msgstr "Arrêté"
+
+#: admin.sh:216
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: admin.sh:223
+msgid "Importing"
+msgstr "Importation"
+
+#: admin.sh:232
+msgid "Checking"
+msgstr "Vérification"
+
+#: admin.sh:241
+msgid "Repairing"
+msgstr "Réparation"
+
+#: admin.sh:250
+msgid "Exporting"
+msgstr "Exportation"
+
+#: admin.sh:267
+msgid "argument %s is incorrect"
+msgstr "l'argument %s est incorrect"
+
+#: admin.sh:299
+msgid "Launching"
+msgstr "Lancement"
+
+#: admin.sh:117
+msgid "option %s must have an argument"
+msgstr "l'option %s doit avoir un argument"
+
+#: admin.sh:119 admin.sh:128
+msgid "option %s is an incorrect option"
+msgstr "l'option %s est incorrecte"
+
+#: admin.sh:136
+msgid "Bad command line"
+msgstr "Mauvaise ligne de commande"
+
+#: admin.sh:139
+msgid "Folder %s must exists"
+msgstr "Le répertoire %s doit exister"
+
+#: admin.sh:415
+msgid "Command %s invalid"
+msgstr "La commande %s est invalide"
+
+#: admin.sh:432
+msgid "Global %-13s :"
+msgstr "%-10s global(e) :"
+
+#: admin.sh:441
+msgid "The module '%s' don't exists"
+msgstr "Le module '%s' n'existe pas"
+

@@ -1,0 +1,245 @@
+.TH BACKUP.SH 1 LOCAL
+
+.SH NAME
+backup.sh - gère l'importation et l'exportation des données depuis des modules
+
+.SH SYNOPSIS
+backup.sh 
+.I [options]
+.B -l
+
+backup.sh
+.I [options] <module>
+.B import|export 
+.I <destination>
+
+.SH DESCRIPTION
+.B backup.sh
+peut gérer les données sauvegardées 
+d'un ensemble de modules en exportant (sauvegardes) et en important (restauration) des données.
+
+Avec ce script vous pouvez gérer facilement une application qui utilise de multiples modules.
+
+.SH OPTIONS
+.TP 2
+-D 
+indique qu'il faut efface les données actuelles du module avant l'importation.
+
+.TP
+-M <répertoire>
+indique l'emplacement des fichiers de modules (voir MODULES).
+défaut : backup-modules
+
+.TP
+-E <fichier>
+indique l'emplacement du fichier d'environnement (voir MODULES).
+défaut :
+.I aucun
+
+.TP
+-l
+affiche la liste des modules.
+
+.TP
+-A nosys
+l'action est effectuée pour tous les modules qui n'ont pas le préfixe 
+.B sys.
+A utiliser à la place de <module>.
+
+.TP
+-A allsys
+l'action est effectuée sur tous les modules.
+A utiliser à la place de <module>.
+
+.TP
+-v
+affiche la version du programme
+.B backup.sh.
+
+.TP
+-?
+affiche le message d'aide.
+
+.SH COMMANDES
+
+.TP 2
+export <répertoire>
+exporte les données du module dans le
+.I répertoire.
+
+.TP
+import <répertoire>
+importe les données du module depuis les données sauvegardées dans le 
+.I  répertoire.
+
+.SH MODULES
+Un module correspond à un fichier qui décrit comment exporter ou importer les données d'un composant.
+C'est un fichier script avec un format particulier (voir ci-dessous).
+Ce fichier contient des fonctions shell et une description.
+Un fichier d'environnement peut être utilisé pour conserver des paramètres ou des fonctions globales. 
+
+.SS Fichier d'environnement
+C'est un script optionnel lancé dans le shell courant (avec la commande 
+.B . (point) 
+). Ce fichier doit être indiqué avec l'option 
+.B -E 
+ .
+
+.SS Nom du fichier
+Le fichier module doit présent dans un répertoire (par défaut 
+.I backup-modules
+) en suivant un de ces formats :
+.I <nombre>_<nom>
+ou
+.I <nombre>_sys_<nom>
+où 
+.TP 2
+<nombre>
+est un nombre. Il indique l'ordre d'exportation du module quand l'option 
+.B -A 
+est utilisée. Lors de l'importation l'ordre est inversé.
+.TP
+<nom>
+est le nom que vous voulez.
+.TP
+sys
+est utilisé pour indiquer un module système.
+
+.SS Modules Systèmes
+Un module système représente un composant utilisé globalement sur la machine, comme un 
+.I serveur ldap
+ou un 
+.I serveur dns 
+c'est à dire quand l'arrêt du composant a un impact sur l'ensemble de la machine et des autres applications.
+
+.SS Format du fichier
+Le fichier doit contenir la description du module (commentaires avec NNNA) et 2 fonctions shells :
+.TP 1
+fn_export
+.TP
+fn_import
+
+
+
+Ci-dessous, un modèle pour les fichiers :
+
+ #!/bin/sh
+
+ # ################################################# #
+ # NNNA description décrire ici le composant         #
+ # NNNA author      vous                             #
+ # NNNA version     version de ce script             #
+ # ################################################# #
+
+ fn_import()
+ {
+  if [ "$1" = '-D' ]; then
+   #détruit toutes les donnes (effacement)
+   shift 1
+   foobar
+  fi
+  #importe les données depuis $1
+  foo $1
+  return 0 #ok
+ }
+
+ fn_export()
+ {
+   #exporte les données vers $1
+   faabar $1
+   return 0 #ok
+ }
+
+
+.SH EXEMPLE
+Par exemple, si votre application est composé d'un site web et d'une base de données, vous pouvez créer deux modules :
+.TP 2
+un pour le site web,
+.TP
+un autre pour la base de données.
+
+
+
+.SS Site web
+Supposons que le site web soit hébergé dans un
+.I virtualhost 
+sur un Apache mutualisé. 
+L'Apache est donc un composant système.
+Nous allons créer le fichier 
+.B backup-modules/20_sys_apache.
+Ci-dessous son contenu:
+ #!/bin/sh
+
+ # ################################################# #
+ # NNNA description Serveur web apache               #
+ # NNNA author      Auteur de l'exemple              #
+ # NNNA version     version 1.0                      #
+ # ################################################# #
+
+ fn_export()
+ {
+  tar czvf $1/apache.tgz /var/nnnadminexample/mywebsite/htdocs
+  return $?
+ }
+ 
+ fn_import()
+ {
+  if [ "$1" = '-D' ]; then
+   #la suppression avant l'import n'est pas supportée
+   shift 1
+  fi
+  cd /
+  tar xzf $1/apache.tgz 
+  cd ->/dev/null
+  return $?
+ }
+
+.SS Base de données
+L'instance de la base de données est lancée en mode autonome mais doit être lancée avant l'Apache.
+Nous allons créer le fichier 
+.B backup-modules/10_database.
+Ci-dessous son contenu
+ #!/bin/sh
+
+ # ################################################# #
+ # NNNA description Base de données du site web      #
+ # NNNA author      Auteur de l'exemple              #
+ # NNNA version     version 1.0                      #
+ # ################################################# #
+ 
+
+ PG_DIR=/usr/lib/postgresql/9.1/bin
+ PGDATA=/var/nnnadminexample/mydatabase
+ 
+ fn_export()
+ {
+  su - postgres -c "PGDATA=$PGDATA;$PG_DIR/pg_dump -Ft -f $1/base.tar"
+  return $?
+ } 
+ 
+ fn_import()
+ {
+  unset opt
+  if [ "$1" = '-D' ]; then
+   opt='-c'
+  fi
+  su - postgres -c "PGDATA=$PGDATA;$PG_DIR/pg_restore $opt -Ft <$1/base.tar"
+  return $?
+ }
+
+.SS Exporter la base de données seulement (dans le répertoire /backup)
+backup.sh database export /backup
+
+.SS Exporter tous les modules
+backup.sh -A allsys export /backup
+
+.SS Importer les données d'apache depuis le répertoire /backup 
+backup.sh apache import /backup
+
+.SH AUTEUR
+3Zen
+
+.SH VOIR AUSSI
+.BR admin.sh(1),
+.BR check.sh(1),
+.BR launch.sh(1)

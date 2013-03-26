@@ -1,0 +1,17 @@
+#!/bin/sh
+
+fn_action()
+{
+ prog=$1
+ shift 1
+ $(dirname $0)/$prog -M $(dirname $0)/tests/05_launch  "$@"
+ return "$?"
+}
+
+
+fn_launch()
+{
+fn_action launch.sh modulel | grep 23  >/dev/null || return 1
+return 0
+}
+

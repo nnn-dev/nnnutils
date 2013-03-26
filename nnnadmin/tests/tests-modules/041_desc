@@ -1,0 +1,19 @@
+#!/bin/sh
+
+fn_action()
+{
+ prog=$1
+ shift 1
+ $(dirname $0)/$prog -M $(dirname $0)/tests/04_desc  "$@"
+ return "$?"
+}
+
+
+fn_launch()
+{
+for prog in admin.sh backup.sh check.sh launch.sh; do
+ fn_action $prog -l | tail -n +3 | head -n 1 | grep '^ *04 *| *desc *| *it'"'"'s describing *| *an_author *| *00001 *| *0 *$' >/dev/null || return 1
+done
+return 0
+}
+

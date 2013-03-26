@@ -1,0 +1,213 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LAUNCH.SH</TITLE>
+</HEAD><BODY>
+<H1>LAUNCH.SH</H1>
+Section: User Commands  (1)<BR>Updated: LOCAL<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+launch.sh - launching action
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+launch.sh 
+<I>[options]</I>
+
+<B>-l</B>
+
+<P>
+launch.sh
+<I>[options] </I>
+
+<I>&lt;module&gt;</I>
+
+<B>[launch]</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>launch.sh</B>
+
+can be use to do an action for modules of an application.
+<P>
+With this script you can manage easily an application using multiples modules.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT>-M &lt;directory&gt;<DD>
+indicates the path of the modules files (see MODULES).
+default : launch-modules
+<P>
+<DT>-E &lt;file&gt;<DD>
+indicates the path of the environment file (see MODULES).
+default: 
+<I>none</I>
+
+<P>
+<DT>-l<DD>
+show list of modules
+<P>
+<DT>-A nosys<DD>
+action on all modules without
+<B>sys </B>
+
+prefix.
+Use it instead &lt;module&gt;.
+<P>
+<DT>-A allsys<DD>
+action on all modules.
+Use it instead &lt;module&gt;.
+<P>
+<DT>-v<DD>
+show this 
+<B>launch.sh </B>
+
+script's version.
+<P>
+<DT>-?<DD>
+show the help message.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMMANDS</H2>
+
+<DL COMPACT>
+<DT>launch<DD>
+launch the action (it's default)
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>MODULES</H2>
+
+A module is a file describing how to launch the action.
+It's a script file with particular format (see below).
+This file contains shell functions and description. 
+An environment file can be used too for storing parameters or global functions.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Environment file</H3>
+
+It's an optional script launched on current shell (with 
+<B>. (dot) </B>
+
+command). This file must be indicated with the 
+<B>-E </B>
+
+option.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H3>Filename</H3>
+
+This module's file must be in a directory (by default 
+<I>launch-modules</I>
+
+) with one of this format :
+<I>&lt;number&gt;_&lt;name&gt;</I>
+
+or
+<I>&lt;number&gt;_sys_&lt;name&gt;</I>
+
+were 
+<DL COMPACT>
+<DT>&lt;number&gt;<DD>
+is a number. It indicates the order to export this module when 
+<B>-A </B>
+
+option is used.
+<P>
+<DT>&lt;name&gt;<DD>
+is the name you want.
+<DT>sys<DD>
+is used for indicated a system module.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>System modules</H3>
+
+A system module represents a component used globally on the system. Like 
+<I>ldap server</I>
+
+or
+<I>dns server </I>
+
+that is when stopping this component has an impact on the machine and on the other applications.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H3>Format of the file</H3>
+
+The file must contain description of the module (comment with NNNA) and a shell function:
+<DL COMPACT>
+<DT>fn_launch<DD>
+<P>
+<P>
+<P>
+This is the function launched.
+<P>
+<P>
+Below, a template for the file:
+<P>
+<BR>&nbsp;#!/bin/sh
+<P>
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;description&nbsp;describe&nbsp;here&nbsp;the&nbsp;component&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;of&nbsp;the&nbsp;script&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<P>
+<BR>&nbsp;fn_launch()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;&nbsp;return&nbsp;0&nbsp;#ok
+<BR>&nbsp;}
+<P>
+<P>
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+3Zen
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+admin.sh">admin.sh</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+backup.sh">backup.sh</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+check.sh">check.sh</A>(1)</B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">COMMANDS</A><DD>
+<DT><A HREF="#lbAG">MODULES</A><DD>
+<DL>
+<DT><A HREF="#lbAH">Environment file</A><DD>
+<DT><A HREF="#lbAI">Filename</A><DD>
+<DT><A HREF="#lbAJ">System modules</A><DD>
+<DT><A HREF="#lbAK">Format of the file</A><DD>
+</DL>
+<DT><A HREF="#lbAL">AUTHOR</A><DD>
+<DT><A HREF="#lbAM">SEE ALSO</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 22:11:13 GMT, March 25, 2013
+</BODY>
+</HTML>

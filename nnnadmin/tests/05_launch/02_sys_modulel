@@ -1,0 +1,7 @@
+#!/bin/sh
+
+fn_launch()
+{
+ echo "23"
+}
+

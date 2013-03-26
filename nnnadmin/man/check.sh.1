@@ -1,0 +1,276 @@
+.TH CHECK.SH 1 LOCAL
+
+.SH NAME
+check.sh - check and repair modules
+
+.SH SYNOPSIS
+check.sh 
+.I [options]
+.B -l
+
+check.sh
+.I [options] 
+.B [-n] 
+.I <module>
+
+.SH DESCRIPTION
+.B check.sh
+can be use to check (and repair) modules of an application.
+
+The purpose of repairing a module is to correct common problems that prevent the operation of the application (for instance with checking file permissions).
+
+With this script you can manage easily an application using multiples modules.
+
+.SH OPTIONS
+.TP 2
+-n 
+only check, do not repair.
+
+.TP
+-M <directory>
+indicates the path of the modules files (see MODULES).
+default : check-modules
+
+.TP
+-E <file>
+indicates the path of the environment file (see MODULES).
+default: 
+.I none
+
+.TP
+-l
+show the list of modules.
+
+.TP
+-A nosys
+action on all modules without
+.B sys 
+prefix.
+Use it instead <module>.
+
+.TP
+-A allsys
+action on all modules.
+Use it instead <module>.
+
+.TP
+-v
+show this 
+.B check.sh 
+script's version.
+
+.TP
+-?
+show the help message.
+
+.SH COMMANDS
+The default action is to repair a module. 
+
+Use the option
+.I -n 
+to check a module.
+
+Use the option
+.I -l 
+to list availables modules.
+
+.SH MODULES
+A module is a file describing how to check and repair the modules.
+It's a script file with particular format (see below).
+This file contains shell functions and description. 
+An environment file can be used too for storing parameters or global functions.
+
+.SS Environment file
+It's an optional script launched on current shell (with 
+.B . (dot) 
+command). This file must be indicated with the 
+.B -E 
+option.
+
+.SS Filename
+This module's file must be in a directory (by default 
+.I check-modules
+) with one of this format :
+.I <number>_<name>
+or
+.I <number>_sys_<name>
+were 
+.TP 2
+<number>
+is a number. It indicates the order to export this module when 
+.B -A 
+option is used.
+
+.TP
+<name>
+is the name you want.
+.TP
+sys
+is used for indicated a system module.
+
+.SS System modules
+A system module represents a component used globally on the system. Like 
+.I ldap server
+or
+.I dns server 
+that is when stopping this component has an impact on the machine and on the other applications.
+
+.SS Format of the file
+The file must contain description of the module (comment with NNNA) and 2 shell functions:
+.TP 1
+fn_check
+.TP
+fn_repair.
+
+The 
+.I fn_check 
+function is used before to know if 
+.I fn_repair
+must be launched.
+
+
+
+Below, a template for the file:
+
+ #!/bin/sh
+
+ # ################################################# #
+ # NNNA description describe here the component      #
+ # NNNA author      you                              #
+ # NNNA version     version of the script            #
+ # ################################################# #
+
+ fn_check()
+ {
+  #check user and group
+  #check file permission
+  return 0 #ok
+ }
+
+ fn_repair()
+ {
+   #modify user and group
+   #modify file permission
+   return 0 #ok
+ }
+
+
+.SH EXAMPLE
+For instance if your application is composed by a website and database, you can create two module : 
+.TP 2
+one for the website
+.TP
+another for the database
+
+
+
+.SS Website
+The website is hosted in a virtualhost on a shared Apache server. 
+So, the Apache is a system module.
+We create the file 
+.B check-modules/20_sys_apache.
+Below the content
+
+ #!/bin/sh
+
+ # ################################################# #
+ # NNNA description apache web server                #
+ # NNNA author      Example'author                   #
+ # NNNA version     version 1.0                      #
+ # ################################################# #
+ 
+ fn_check()
+ {
+  ret=0
+  #user rights
+  txt=$(find /var/nnnadminexample/mywebsite -not -user www-data -printf "%P's user must be www-data\n" | sed -e '1,$s'"|^'s|mywebsite's|g")
+  if [ -n "$txt" ]; then
+   echo "$txt"
+   ret=1
+  fi
+  #in this example the files must be not writable
+  for i in u g o ; do
+   txt=$(find /var/nnnadminexample/mywebsite -perm -$i=w -printf "%P must not be writable\n" | sed -e '1,$s'"|^ must|mywebsite must|g")
+   if [ -n "$txt" ]; then
+    echo "$txt"
+    ret=1
+   fi
+  done
+  return $ret #0=OK, other=NOK
+ }
+ 
+ fn_repair()
+ {
+  chown -R www-data /var/nnnadminexample/mywebsite || return 1
+  chmod -R ugo-w /var/nnnadminexample/mywebsite || return 1
+  return 0 #0=OK, other=NOK
+ }
+
+
+.SS Database
+The database instance is launched on standalone but must be launch before Apache.
+We create the file
+.B check-modules/10_database.
+Below the content
+
+ #!/bin/sh
+ 
+ # ################################################# #
+ # NNNA description database of the website          #
+ # NNNA author      Example'author                   #
+ # NNNA version     version 1.0                      #
+ # ################################################# #
+ 
+ PG_DIR=/usr/lib/postgresql/9.1/bin
+ PGDATA=/var/nnnadminexample/mydatabase
+ 
+ fn_check()
+ {
+  ret=0
+  #check folders
+  txt=$(find $PGDATA -type d -not -perm 0700 -printf "%P's rights must are 0700\n" | sed -e '1,$s'"|^'s|.'s|g")
+  if [ -n "$txt" ]; then
+   echo "$txt"
+   ret=1
+  fi
+  #check files
+  txt=$(find $PGDATA -not -perm 0600 -not -type d -printf "%P's rights must are 0600\n" | sed -e '1,$s'"|^'s|.'s|g")
+  if [ -n "$txt" ]; then
+   echo "$txt"
+   ret=1
+  fi
+  #check all
+  txt=$(find $PGDATA -not -user postgres -printf "%P's user must be postgres\n" | sed -e '1,$s'"|^'s|.'s|g")
+  if [ -n "$txt" ]; then
+   echo "$txt"
+   ret=1
+  fi
+  return $ret #0=OK, other=NOK
+ } 
+ 
+ fn_repair()
+ {
+  #if check indicates errors, we reset all the rights
+  chown -R postgres $PGDATA || return 1
+  find $PGDATA -type d -exec chmod 0700 {} \; || return 1
+  find $PGDATA -not -type d -exec chmod 0600 {} \; || return 1
+  return 0 #ok
+ }
+
+
+.SS Repair database only
+check.sh database
+
+.SS Repair all
+check.sh -A allsys
+
+.SS Check only apache
+check.sh -n apache
+
+.SH AUTHOR
+3Zen
+
+.SH SEE ALSO
+.BR admin.sh(1),
+.BR backup.sh(1),
+.BR launch.sh(1)

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# ################################################# #
+# NNNA description apache web server                #
+# NNNA author      Example'author                   #
+# NNNA version     version 1.0                      #
+# ################################################# #
+
+fn_export()
+{
+ tar czvf $1/apache.tgz /var/nnnadminexample/mywebsite/htdocs
+ return $?
+}
+
+fn_import()
+{
+ if [ "$1" = '-D' ]; then
+  #delete before remove not supported
+  shift 1
+ fi
+ cd /
+ tar xzf $1/apache.tgz
+ cd ->/dev/null 
+ return $?
+}
+
+

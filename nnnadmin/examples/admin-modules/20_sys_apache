@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# ################################################# #
+# NNNA description apache web server                #
+# NNNA author      Example'author                   #
+# NNNA version     version 1.0                      #
+# ################################################# #
+
+fn_status()
+{
+ service apache2 status
+ return $?
+}
+
+fn_start()
+{
+ service apache2 start
+ return $?
+}
+
+fn_stop()
+{
+ service apache2 stop
+ return $?
+}

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+fn_stop()
+{
+ return 1
+}
+
+fn_start()
+{
+ #if we want to start this one, the try restart don't work
+ echo "ERROR" >> /tmp/nnnatesttr
+ return 1
+}
+
+fn_status()
+{
+ return 3
+}

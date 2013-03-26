@@ -1,0 +1,138 @@
+.TH LAUNCH.SH 1 LOCAL
+
+.SH NAME
+launch.sh - launching action
+
+.SH SYNOPSIS
+launch.sh 
+.I [options]
+.B -l
+
+launch.sh
+.I [options] 
+.I <module>
+.B [launch]
+
+.SH DESCRIPTION
+.B launch.sh
+can be use to do an action for modules of an application.
+
+With this script you can manage easily an application using multiples modules.
+
+.SH OPTIONS
+.TP 2
+-M <directory>
+indicates the path of the modules files (see MODULES).
+default : launch-modules
+
+.TP
+-E <file>
+indicates the path of the environment file (see MODULES).
+default: 
+.I none
+
+.TP
+-l
+show list of modules
+
+.TP
+-A nosys
+action on all modules without
+.B sys 
+prefix.
+Use it instead <module>.
+
+.TP
+-A allsys
+action on all modules.
+Use it instead <module>.
+
+.TP
+-v
+show this 
+.B launch.sh 
+script's version.
+
+.TP
+-?
+show the help message.
+
+.SH COMMANDS
+.TP 2
+launch
+launch the action (it's default)
+
+.SH MODULES
+A module is a file describing how to launch the action.
+It's a script file with particular format (see below).
+This file contains shell functions and description. 
+An environment file can be used too for storing parameters or global functions.
+
+.SS Environment file
+It's an optional script launched on current shell (with 
+.B . (dot) 
+command). This file must be indicated with the 
+.B -E 
+option.
+
+.SS Filename
+This module's file must be in a directory (by default 
+.I launch-modules
+) with one of this format :
+.I <number>_<name>
+or
+.I <number>_sys_<name>
+were 
+.TP 2
+<number>
+is a number. It indicates the order to export this module when 
+.B -A 
+option is used.
+
+.TP
+<name>
+is the name you want.
+.TP
+sys
+is used for indicated a system module.
+
+.SS System modules
+A system module represents a component used globally on the system. Like 
+.I ldap server
+or
+.I dns server 
+that is when stopping this component has an impact on the machine and on the other applications.
+
+.SS Format of the file
+The file must contain description of the module (comment with NNNA) and a shell function:
+.TP 1
+fn_launch
+
+
+
+This is the function launched.
+
+
+Below, a template for the file:
+
+ #!/bin/sh
+
+ # ################################################# #
+ # NNNA description describe here the component      #
+ # NNNA author      you                              #
+ # NNNA version     version of the script            #
+ # ################################################# #
+
+ fn_launch()
+ {
+   return 0 #ok
+ }
+
+
+.SH AUTHOR
+3Zen
+
+.SH SEE ALSO
+.BR admin.sh(1),
+.BR backup.sh(1),
+.BR check.sh(1)

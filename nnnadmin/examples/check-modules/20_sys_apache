@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# ################################################# #
+# NNNA description apache web server                #
+# NNNA author      Example'author                   #
+# NNNA version     version 1.0                      #
+# ################################################# #
+
+fn_check()
+{
+ ret=0
+ #user rights
+ txt=$(find /var/nnnadminexample/mywebsite -not -user www-data -printf "%P's user must be www-data\n" | sed -e '1,$s'"|^'s|mywebsite's|g")
+ if [ -n "$txt" ]; then
+  echo "$txt"
+  ret=1
+ fi
+ #in this example the files must be not writable
+ for i in u g o ; do
+  txt=$(find /var/nnnadminexample/mywebsite -perm -$i=w -printf "%P must not be writable\n" | sed -e '1,$s'"|^ must|mywebsite must|g")
+  if [ -n "$txt" ]; then
+   echo "$txt"
+   ret=1
+  fi
+ done
+ return $ret #0=OK, other=NOK
+}
+
+fn_repair()
+{
+ chown -R www-data /var/nnnadminexample/mywebsite || return 1
+ chmod -R ugo-w /var/nnnadminexample/mywebsite || return 1
+ return 0 #0=OK, other=NOK
+}
+
+

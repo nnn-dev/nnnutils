@@ -1,0 +1,156 @@
+#!/bin/sh
+
+_nnnadmincompletecheck()
+{
+local argc cur prev opts
+COMPREPLY=()
+
+argc=${COMP_CWORD}; 
+cur="${COMP_WORDS[argc]}" 
+prev="${COMP_WORDS[argc-1]}"
+opts="-l -n -E -M -? -v -A " 
+
+if [ "$prev" = '-?' ] || [ "$prev" = '-v' ]; then
+COMPREPLY=()
+elif [[ "$cur" == -* ]] ; then
+
+COMPREPLY=( $(compgen -W "$opts" -- $cur ) )
+
+elif [ "$prev" = '-A' ]; then
+COMPREPLY=( $(compgen -W "nosys allsys" -- $cur ) )
+elif [ "$prev" = '-E' ] || [ "$prev" = '-M' ]; then
+COMPREPLY=( $(compgen -d -- $cur ) )
+else 
+
+base=${COMP_WORDS[0]}
+nnna_modules="$(dirname $base)/$(basename $base .sh)-modules"
+
+i=1
+o=$opts
+while [ "$i" -lt "$argc" ]; do
+ if [ "${COMP_WORDS[i]}" = '-M' ]; then
+  nnna_modules=${COMP_WORDS[i+1]}
+  i=$(( $i + 2 ))
+ elif [ "${COMP_WORDS[i]}" = '-E' ]; then
+  i=$(( $i + 2 ))
+ elif [ "$(printf -- "${COMP_WORDS[i]}" | cut -c1)" != '-' ] ; then
+  COMPREPLY=()
+  return 0
+ else
+  o=$(echo $o | sed -e '1,$s|'"${COMP_WORDS[i]}"' ||g')
+  i=$(( $i + 1 ))
+ fi
+done
+
+ COMPREPLY=( $(compgen -W "$o$(find "$nnna_modules" -type f -print  2>/dev/null \
+| sort -n | sed -e '1,$s|^'"$nnna_modules"'/[0-9][0-9]*_||g' \
+-e '1,$s|^'"$nnna_modules"'/[0-9][0-9]*_sys_||g')" -- $cur ))
+
+fi
+}
+
+_nnnaadmincompletebackup()
+{
+local argc cur prev opts
+COMPREPLY=()
+
+argc=${COMP_CWORD}; 
+cur="${COMP_WORDS[argc]}" 
+prev="${COMP_WORDS[argc-1]}"
+opts="-l -E -M -D -? -v -A " 
+
+if [ "$prev" = '-?' ] || [ "$prev" = '-v' ]; then
+COMPREPLY=()
+elif [[ "$cur" == -* ]] ; then
+
+COMPREPLY=( $(compgen -W "$opts" -- $cur ) )
+
+elif [ "$prev" = '-A' ]; then
+COMPREPLY=( $(compgen -W "nosys allsys" -- $cur ) )
+elif [ "$prev" = '-E' ] || [ "$prev" = '-M' ]; then
+COMPREPLY=( $(compgen -d -- $cur ) )
+else 
+
+base=${COMP_WORDS[0]}
+nnna_modules="$(dirname $base)/$(basename $base .sh)-modules"
+
+i=1
+o=$opts
+while [ "$i" -lt "$argc" ]; do
+ if [ "${COMP_WORDS[i]}" = '-M' ]; then
+  nnna_modules=${COMP_WORDS[i+1]}
+  i=$(( $i + 2 ))
+ elif [ "${COMP_WORDS[i]}" = '-E' ]; then
+  i=$(( $i + 2 ))
+ elif [ "$(printf -- "${COMP_WORDS[i]}" | cut -c1)" != '-' ] ; then
+ if [ "$(($i + 1))" -ne "$argc" ]; then
+   COMPREPLY=( $(compgen -d -- $cur ))
+ else
+ COMPREPLY=( $(compgen -W "import export" -- $cur ) )
+ fi
+  return 0
+ else
+  o=$(echo $o | sed -e '1,$s|'"${COMP_WORDS[i]}"' ||g')
+  i=$(( $i + 1 ))
+ fi
+done
+
+ COMPREPLY=( $(compgen -W "list $o$(find "$nnna_modules" -type f -print  2>/dev/null \
+| sort -n | sed -e '1,$s|^'"$nnna_modules"'/[0-9][0-9]*_||g' \
+-e '1,$s|^'"$nnna_modules"'/[0-9][0-9]*_sys_||g')" -- $cur ) )
+
+fi
+}
+
+_nnnaadmincompleteadmin()
+{
+local argc cur prev opts
+COMPREPLY=()
+
+argc=${COMP_CWORD}; 
+cur="${COMP_WORDS[argc]}" 
+prev="${COMP_WORDS[argc-1]}"
+opts="-l -E -M -? -v -A " 
+
+if [ "$prev" = '-?' ] || [ "$prev" = '-v' ]; then
+COMPREPLY=()
+elif [[ "$cur" == -* ]] ; then
+
+COMPREPLY=( $(compgen -W "$opts" -- $cur ) )
+
+elif [ "$prev" = '-A' ]; then
+COMPREPLY=( $(compgen -W "nosys allsys" -- $cur ) )
+elif [ "$prev" = '-E' ] || [ "$prev" = '-M' ]; then
+COMPREPLY=( $(compgen -d -- $cur ) )
+else 
+
+base=${COMP_WORDS[0]}
+nnna_modules="$(dirname $base)/$(basename $base .sh)-modules"
+
+i=1
+o=$opts
+while [ "$i" -lt "$argc" ]; do
+ if [ "${COMP_WORDS[i]}" = '-M' ]; then
+  nnna_modules=${COMP_WORDS[i+1]}
+  i=$(( $i + 2 ))
+ elif [ "${COMP_WORDS[i]}" = '-E' ]; then
+  i=$(( $i + 2 ))
+ elif [ "$(printf -- "${COMP_WORDS[i]}" | cut -c1)" != '-' ] ; then
+ if [ "$(($i + 1))" -ne "$argc" ]; then
+   COMPREPLY=()
+ else
+ COMPREPLY=( $(compgen -W "status start stop restart" -- $cur ) )
+ fi
+  return 0
+ else
+  o=$(echo $o | sed -e '1,$s|'"${COMP_WORDS[i]}"' ||g')
+  i=$(( $i + 1 ))
+ fi
+done
+
+ COMPREPLY=( $(compgen -W "list $o$(find "$nnna_modules" -type f -print  2>/dev/null \
+| sort -n | sed -e '1,$s|^'"$nnna_modules"'/[0-9][0-9]*_||g' \
+-e '1,$s|^'"$nnna_modules"'/[0-9][0-9]*_sys_||g')" -- $cur ) )
+
+fi
+}

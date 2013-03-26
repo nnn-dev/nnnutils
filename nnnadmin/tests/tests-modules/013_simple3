@@ -1,0 +1,17 @@
+#!/bin/sh
+
+fn_simple()
+{
+ $(dirname $0)/admin.sh -M $(dirname $0)/tests/01_simple  "$@"
+ return "$?"
+}
+
+fn_launch()
+{
+echo "stopped status = 0"
+fn_simple stopped status
+[ "$?" -ne '3' ] && return 1
+echo "Pass"
+return 0
+}
+

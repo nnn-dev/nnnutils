@@ -1,0 +1,21 @@
+#!/bin/sh
+
+fn_lllist()
+{
+ prog=$1
+ shift 1
+ $(dirname $0)/$prog -M $(dirname $0)/tests/03_list  "$@"
+ return "$?"
+}
+
+
+fn_launch()
+{
+for prog in admin.sh backup.sh check.sh launch.sh; do
+ fn_lllist $prog -l | tail -n +3 | head -n 1 | grep '^ *01 * | *module1 *| *module1 *| *3Zen *| *1.1 *| *0 *$' >/dev/null || return 1
+ fn_lllist $prog -l | tail -n +4 | head -n 1 | grep '^ *02 * | *module2 *| *module2 *| *3Zen *| *2.2 *| *1 *$' >/dev/null || return 2
+ fn_lllist $prog -l | tail -n +5 | head -n 1 | grep '^ *03 * | *module3 *| *module3 *| *3Zen *| *3.3 *| *0 *$' >/dev/null || return 3
+done
+return 0
+}
+

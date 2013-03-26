@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# ################################################# #
+# NNNA description database of the website          #
+# NNNA author      Example'author                   #
+# NNNA version     version 1.0                      #
+# ################################################# #
+
+PG_DIR=/usr/lib/postgresql/9.1/bin
+PGDATA=/var/nnnadminexample/mydatabase
+
+fn_export()
+{
+ su - postgres -c "PGDATA=$PGDATA;$PG_DIR/pg_dump -Ft -f $1/base.tar"
+ return $?
+} 
+
+fn_import()
+{
+ unset opt
+ if [ "$1" = '-D' ]; then
+  opt='-c'
+ fi
+ su - postgres -c "PGDATA=$PGDATA;$PG_DIR/pg_restore $opt -Ft <$1/base.tar"
+ return $?
+}
+

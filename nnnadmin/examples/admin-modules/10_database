@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# ################################################# #
+# NNNA description database of the website          #
+# NNNA author      Example'author                   #
+# NNNA version     version 1.0                      #
+# ################################################# #
+
+PG_CTL=/usr/lib/postgresql/9.1/bin/pg_ctl
+
+fn_status()
+{
+ su - postgres -c "$PG_CTL status -D /var/nnnadminexample/mydatabase"
+ case $? in  #transform the pg_ctl exit status on system V
+ '0') return 0;;
+ '1') return 3;;
+ *) return 4;;
+ esac
+}
+
+fn_start()
+{
+ su - postgres -c "$PG_CTL start -D /var/nnnadminexample/mydatabase"
+ return $?
+}
+
+fn_stop()
+{
+ su - postgres -c "$PG_CTL stop  -D /var/nnnadminexample/mydatabase"
+ return $?
+}

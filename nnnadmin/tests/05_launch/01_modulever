@@ -1,0 +1,7 @@
+#!/bin/sh
+
+fn_version()
+{
+ echo "23"
+}
+

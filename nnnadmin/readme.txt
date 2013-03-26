@@ -1,0 +1,48 @@
+#summary nnnadmin
+#labels Featured,nnnadmin
+
+= NNNADMIN =
+
+== What is it ? ==
+nnnadmin is a set of scripts to easily manage a software solution.
+
+== Why ? ==
+A few years ago, I had to build a software platform for my business.
+This platform has been made with bricks products (ldap, database, apache, etc.). I had a single monolithic shell script to start and stop all products.
+It worked well, but it was not easy to add a new product.
+nnnadmin is my solution to avoid this problem.
+
+== How it works ? ==
+Each block (module) is described by simple scripts.
+  * A script with functions of start, stop and status display,
+  * A script with backup and restore,
+  * A script to check file permissions and fix it.
+
+After *admin.sh* script can be used to start, stop and view the status of each module, but also know how to restart the module (stop and start) and try to restart (start only if it is already running) .
+
+The *backup.sh* script can be used to import or export data from each module.
+
+The *check.sh* script can be used to repair each module.
+
+=== Documentation ===
+==== Help ====
+You can use the option -? for simple help or -h for the complete manual.
+
+==== Html _Man_ pages (in English) ====
+  * [https://nnnutils.googlecode.com/svn/trunk/nnnadmin/man/admin.sh.1.html man admin.sh]
+  * [https://nnnutils.googlecode.com/svn/trunk/nnnadmin/man/backup.sh.1.html man backup.sh]
+  * [https://nnnutils.googlecode.com/svn/trunk/nnnadmin/man/check.sh.1.html man check.sh]
+
+== Licence ==
+The licence *lgpl3* is used ([https://code.google.com/p/nnnutils/source/browse/trunk/nnnadmin/lgpl-3.0.txt licence])
+A copy of the licence was included in the archive (lgpl-3.0.txt)
+
+
+== Installation ==
+Simply unzip the [http://nnnutils.googlecode.com/files/nnnadmin-latest.tar.gz archive] into a directory of your choice.
+
+=== Optionally ===
+  * You can copy the extra script _nnnadmin_completion_ into /etc/bash_completion.d/ .
+  * You can also copy the man pages. 
+
+Warning: The LC_MESSAGES *should not* be copied. The script find automatically translated messages from the script directory.

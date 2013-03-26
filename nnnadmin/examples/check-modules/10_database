@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# ################################################# #
+# NNNA description database of the website          #
+# NNNA author      Example'author                   #
+# NNNA version     version 1.0                      #
+# ################################################# #
+
+PG_DIR=/usr/lib/postgresql/9.1/bin
+PGDATA=/var/nnnadminexample/mydatabase
+
+fn_check()
+{
+ ret=0
+ #check browse authorization
+ if [ ! -x "$PGDATA" ]; then
+  echo "Cannot browse $PGDATA"
+  return 1
+ fi
+ #check folders
+ txt=$(find $PGDATA -type d -not -perm 0700 -printf "%P's rights must are 0700\n" | sed -e '1,$s'"|^'s|.'s|g")
+ if [ -n "$txt" ]; then
+  echo "$txt"
+  ret=1
+ fi
+ #check files
+ txt=$(find $PGDATA -not -perm 0600 -not -type d -printf "%P's rights must are 0600\n" | sed -e '1,$s'"|^'s|.'s|g")
+ if [ -n "$txt" ]; then
+  echo "$txt"
+  ret=1
+ fi
+ #check all
+ txt=$(find $PGDATA -not -user postgres -printf "%P's user must be postgres\n" | sed -e '1,$s'"|^'s|.'s|g")
+ if [ -n "$txt" ]; then
+  echo "$txt"
+  ret=1
+ fi
+ return $ret #0=OK, other=NOK
+} 
+
+fn_repair()
+{
+ #if check indicates errors, we reset all the rights
+ chown -R postgres $PGDATA || return 1
+ find $PGDATA -type d -exec chmod 0700 {} \; || return 1
+ find $PGDATA -not -type d -exec chmod 0600 {} \; || return 1
+ return 0 #ok
+}
+

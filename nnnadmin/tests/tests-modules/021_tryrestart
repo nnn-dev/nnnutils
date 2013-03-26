@@ -1,0 +1,19 @@
+#!/bin/sh
+
+fn_tryrestart()
+{
+ $(dirname $0)/admin.sh -M $(dirname $0)/tests/02_tryrestart  "$@"
+ return "$?"
+}
+
+
+fn_launch()
+{
+echo "tryrestart"
+>/tmp/nnnatesttr
+fn_tryrestart -A allsys try-restart 
+res=$?
+[  -f /tmp/nnnatesttr ] && rm /tmp/nnnatesttr
+return $res
+}
+

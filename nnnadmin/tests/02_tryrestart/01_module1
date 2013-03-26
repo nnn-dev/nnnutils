@@ -1,0 +1,30 @@
+#!/bin/sh
+
+fn_start()
+{
+ #must start before module 3
+ grep 'module3 start' /tmp/nnnatesttr >/dev/null 2>&1
+ if [ "$?" -eq '0' ]; then
+  echo "ERROR" >>/tmp/nnnatesttr
+ fi
+ echo 'module1 start' >>/tmp/nnnatesttr
+ return 0
+}
+
+fn_status()
+{
+ grep 'module1 stop' /tmp/nnnatesttr >/dev/null 2>&1
+ [ "$?" -eq '0' ] && return 3
+ return 0
+}
+
+fn_stop()
+{
+#must be stop after module 3
+ grep 'module3 stop' /tmp/nnnatesttr >/dev/null 2>&1
+ if [ "$?" -ne '0' ]; then
+  echo "ERROR" >>/tmp/nnnatesttr
+ fi
+ echo "module1 stop" >>/tmp/nnnatesttr
+ return 0
+}

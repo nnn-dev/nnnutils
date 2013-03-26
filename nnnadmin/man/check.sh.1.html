@@ -1,0 +1,374 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHECK.SH</TITLE>
+</HEAD><BODY>
+<H1>CHECK.SH</H1>
+Section: User Commands  (1)<BR>Updated: LOCAL<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+check.sh - check and repair modules
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+check.sh 
+<I>[options]</I>
+
+<B>-l</B>
+
+<P>
+check.sh
+<I>[options] </I>
+
+<B>[-n] </B>
+
+<I>&lt;module&gt;</I>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>check.sh</B>
+
+can be use to check (and repair) modules of an application.
+<P>
+The purpose of repairing a module is to correct common problems that prevent the operation of the application (for instance with checking file permissions).
+<P>
+With this script you can manage easily an application using multiples modules.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT>-n <DD>
+only check, do not repair.
+<P>
+<DT>-M &lt;directory&gt;<DD>
+indicates the path of the modules files (see MODULES).
+default : check-modules
+<P>
+<DT>-E &lt;file&gt;<DD>
+indicates the path of the environment file (see MODULES).
+default: 
+<I>none</I>
+
+<P>
+<DT>-l<DD>
+show the list of modules.
+<P>
+<DT>-A nosys<DD>
+action on all modules without
+<B>sys </B>
+
+prefix.
+Use it instead &lt;module&gt;.
+<P>
+<DT>-A allsys<DD>
+action on all modules.
+Use it instead &lt;module&gt;.
+<P>
+<DT>-v<DD>
+show this 
+<B>check.sh </B>
+
+script's version.
+<P>
+<DT>-?<DD>
+show the help message.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMMANDS</H2>
+
+The default action is to repair a module. 
+<P>
+Use the option
+<I>-n </I>
+
+to check a module.
+<P>
+Use the option
+<I>-l </I>
+
+to list availables modules.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>MODULES</H2>
+
+A module is a file describing how to check and repair the modules.
+It's a script file with particular format (see below).
+This file contains shell functions and description. 
+An environment file can be used too for storing parameters or global functions.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Environment file</H3>
+
+It's an optional script launched on current shell (with 
+<B>. (dot) </B>
+
+command). This file must be indicated with the 
+<B>-E </B>
+
+option.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H3>Filename</H3>
+
+This module's file must be in a directory (by default 
+<I>check-modules</I>
+
+) with one of this format :
+<I>&lt;number&gt;_&lt;name&gt;</I>
+
+or
+<I>&lt;number&gt;_sys_&lt;name&gt;</I>
+
+were 
+<DL COMPACT>
+<DT>&lt;number&gt;<DD>
+is a number. It indicates the order to export this module when 
+<B>-A </B>
+
+option is used.
+<P>
+<DT>&lt;name&gt;<DD>
+is the name you want.
+<DT>sys<DD>
+is used for indicated a system module.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>System modules</H3>
+
+A system module represents a component used globally on the system. Like 
+<I>ldap server</I>
+
+or
+<I>dns server </I>
+
+that is when stopping this component has an impact on the machine and on the other applications.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H3>Format of the file</H3>
+
+The file must contain description of the module (comment with NNNA) and 2 shell functions:
+<DL COMPACT>
+<DT>fn_check<DD>
+<DT>fn_repair.<DD>
+<P>
+The 
+<I>fn_check </I>
+
+function is used before to know if 
+<I>fn_repair</I>
+
+must be launched.
+<P>
+<P>
+<P>
+Below, a template for the file:
+<P>
+<BR>&nbsp;#!/bin/sh
+<P>
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;description&nbsp;describe&nbsp;here&nbsp;the&nbsp;component&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;of&nbsp;the&nbsp;script&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<P>
+<BR>&nbsp;fn_check()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;#check&nbsp;user&nbsp;and&nbsp;group
+<BR>&nbsp;&nbsp;#check&nbsp;file&nbsp;permission
+<BR>&nbsp;&nbsp;return&nbsp;0&nbsp;#ok
+<BR>&nbsp;}
+<P>
+<BR>&nbsp;fn_repair()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;&nbsp;#modify&nbsp;user&nbsp;and&nbsp;group
+<BR>&nbsp;&nbsp;&nbsp;#modify&nbsp;file&nbsp;permission
+<BR>&nbsp;&nbsp;&nbsp;return&nbsp;0&nbsp;#ok
+<BR>&nbsp;}
+<P>
+<P>
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>EXAMPLE</H2>
+
+For instance if your application is composed by a website and database, you can create two module : 
+<DL COMPACT>
+<DT>one for the website<DD>
+<DT>another for the database<DD>
+<P>
+<P>
+<P>
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H3>Website</H3>
+
+The website is hosted in a virtualhost on a shared Apache server. 
+So, the Apache is a system module.
+We create the file 
+<B>check-modules/20_sys_apache.</B>
+
+Below the content
+<P>
+<BR>&nbsp;#!/bin/sh
+<P>
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;description&nbsp;apache&nbsp;web&nbsp;server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example'author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<BR>&nbsp;
+<BR>&nbsp;fn_check()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;ret=0
+<BR>&nbsp;&nbsp;#user&nbsp;rights
+<BR>&nbsp;&nbsp;txt=$(find&nbsp;/var/nnnadminexample/mywebsite&nbsp;-not&nbsp;-user&nbsp;www-data&nbsp;-printf&nbsp;&quot;%P's&nbsp;user&nbsp;must&nbsp;be&nbsp;www-data&nbsp;|&nbsp;sed&nbsp;-e&nbsp;'1,$s'&quot;|^'s|mywebsite's|g&quot;)
+<BR>&nbsp;&nbsp;if&nbsp;[&nbsp;-n&nbsp;&quot;$txt&quot;&nbsp;];&nbsp;then
+<BR>&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;$txt&quot;
+<BR>&nbsp;&nbsp;&nbsp;ret=1
+<BR>&nbsp;&nbsp;fi
+<BR>&nbsp;&nbsp;#in&nbsp;this&nbsp;example&nbsp;the&nbsp;files&nbsp;must&nbsp;be&nbsp;not&nbsp;writable
+<BR>&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;u&nbsp;g&nbsp;o&nbsp;;&nbsp;do
+<BR>&nbsp;&nbsp;&nbsp;txt=$(find&nbsp;/var/nnnadminexample/mywebsite&nbsp;-perm&nbsp;-$i=w&nbsp;-printf&nbsp;&quot;%P&nbsp;must&nbsp;not&nbsp;be&nbsp;writable&nbsp;|&nbsp;sed&nbsp;-e&nbsp;'1,$s'&quot;|^&nbsp;must|mywebsite&nbsp;must|g&quot;)
+<BR>&nbsp;&nbsp;&nbsp;if&nbsp;[&nbsp;-n&nbsp;&quot;$txt&quot;&nbsp;];&nbsp;then
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;$txt&quot;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;ret=1
+<BR>&nbsp;&nbsp;&nbsp;fi
+<BR>&nbsp;&nbsp;done
+<BR>&nbsp;&nbsp;return&nbsp;$ret&nbsp;#0=OK,&nbsp;other=NOK
+<BR>&nbsp;}
+<BR>&nbsp;
+<BR>&nbsp;fn_repair()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;chown&nbsp;-R&nbsp;www-data&nbsp;/var/nnnadminexample/mywebsite&nbsp;||&nbsp;return&nbsp;1
+<BR>&nbsp;&nbsp;chmod&nbsp;-R&nbsp;ugo-w&nbsp;/var/nnnadminexample/mywebsite&nbsp;||&nbsp;return&nbsp;1
+<BR>&nbsp;&nbsp;return&nbsp;0&nbsp;#0=OK,&nbsp;other=NOK
+<BR>&nbsp;}
+<P>
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H3>Database</H3>
+
+The database instance is launched on standalone but must be launch before Apache.
+We create the file
+<B>check-modules/10_database.</B>
+
+Below the content
+<P>
+<BR>&nbsp;#!/bin/sh
+<BR>&nbsp;
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;description&nbsp;database&nbsp;of&nbsp;the&nbsp;website&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example'author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;NNNA&nbsp;version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version&nbsp;1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+<BR>&nbsp;#&nbsp;#################################################&nbsp;#
+<BR>&nbsp;
+<BR>&nbsp;PG_DIR=/usr/lib/postgresql/9.1/bin
+<BR>&nbsp;PGDATA=/var/nnnadminexample/mydatabase
+<BR>&nbsp;
+<BR>&nbsp;fn_check()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;ret=0
+<BR>&nbsp;&nbsp;#check&nbsp;folders
+<BR>&nbsp;&nbsp;txt=$(find&nbsp;$PGDATA&nbsp;-type&nbsp;d&nbsp;-not&nbsp;-perm&nbsp;0700&nbsp;-printf&nbsp;&quot;%P's&nbsp;rights&nbsp;must&nbsp;are&nbsp;0700&nbsp;|&nbsp;sed&nbsp;-e&nbsp;'1,$s'&quot;|^'s|.'s|g&quot;)
+<BR>&nbsp;&nbsp;if&nbsp;[&nbsp;-n&nbsp;&quot;$txt&quot;&nbsp;];&nbsp;then
+<BR>&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;$txt&quot;
+<BR>&nbsp;&nbsp;&nbsp;ret=1
+<BR>&nbsp;&nbsp;fi
+<BR>&nbsp;&nbsp;#check&nbsp;files
+<BR>&nbsp;&nbsp;txt=$(find&nbsp;$PGDATA&nbsp;-not&nbsp;-perm&nbsp;0600&nbsp;-not&nbsp;-type&nbsp;d&nbsp;-printf&nbsp;&quot;%P's&nbsp;rights&nbsp;must&nbsp;are&nbsp;0600&nbsp;|&nbsp;sed&nbsp;-e&nbsp;'1,$s'&quot;|^'s|.'s|g&quot;)
+<BR>&nbsp;&nbsp;if&nbsp;[&nbsp;-n&nbsp;&quot;$txt&quot;&nbsp;];&nbsp;then
+<BR>&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;$txt&quot;
+<BR>&nbsp;&nbsp;&nbsp;ret=1
+<BR>&nbsp;&nbsp;fi
+<BR>&nbsp;&nbsp;#check&nbsp;all
+<BR>&nbsp;&nbsp;txt=$(find&nbsp;$PGDATA&nbsp;-not&nbsp;-user&nbsp;postgres&nbsp;-printf&nbsp;&quot;%P's&nbsp;user&nbsp;must&nbsp;be&nbsp;postgres&nbsp;|&nbsp;sed&nbsp;-e&nbsp;'1,$s'&quot;|^'s|.'s|g&quot;)
+<BR>&nbsp;&nbsp;if&nbsp;[&nbsp;-n&nbsp;&quot;$txt&quot;&nbsp;];&nbsp;then
+<BR>&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;$txt&quot;
+<BR>&nbsp;&nbsp;&nbsp;ret=1
+<BR>&nbsp;&nbsp;fi
+<BR>&nbsp;&nbsp;return&nbsp;$ret&nbsp;#0=OK,&nbsp;other=NOK
+<BR>&nbsp;}&nbsp;
+<BR>&nbsp;
+<BR>&nbsp;fn_repair()
+<BR>&nbsp;{
+<BR>&nbsp;&nbsp;#if&nbsp;check&nbsp;indicates&nbsp;errors,&nbsp;we&nbsp;reset&nbsp;all&nbsp;the&nbsp;rights
+<BR>&nbsp;&nbsp;chown&nbsp;-R&nbsp;postgres&nbsp;$PGDATA&nbsp;||&nbsp;return&nbsp;1
+<BR>&nbsp;&nbsp;find&nbsp;$PGDATA&nbsp;-type&nbsp;d&nbsp;-exec&nbsp;chmod&nbsp;0700&nbsp;{}&nbsp;;&nbsp;||&nbsp;return&nbsp;1
+<BR>&nbsp;&nbsp;find&nbsp;$PGDATA&nbsp;-not&nbsp;-type&nbsp;d&nbsp;-exec&nbsp;chmod&nbsp;0600&nbsp;{}&nbsp;;&nbsp;||&nbsp;return&nbsp;1
+<BR>&nbsp;&nbsp;return&nbsp;0&nbsp;#ok
+<BR>&nbsp;}
+<P>
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H3>Repair database only</H3>
+
+check.sh database
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H3>Repair all</H3>
+
+check.sh -A allsys
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H3>Check only apache</H3>
+
+check.sh -n apache
+<P>
+<A NAME="lbAR">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+3Zen
+<P>
+<A NAME="lbAS">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+admin.sh">admin.sh</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+backup.sh">backup.sh</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+launch.sh">launch.sh</A>(1)</B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">COMMANDS</A><DD>
+<DT><A HREF="#lbAG">MODULES</A><DD>
+<DL>
+<DT><A HREF="#lbAH">Environment file</A><DD>
+<DT><A HREF="#lbAI">Filename</A><DD>
+<DT><A HREF="#lbAJ">System modules</A><DD>
+<DT><A HREF="#lbAK">Format of the file</A><DD>
+</DL>
+<DT><A HREF="#lbAL">EXAMPLE</A><DD>
+<DL>
+<DT><A HREF="#lbAM">Website</A><DD>
+<DT><A HREF="#lbAN">Database</A><DD>
+<DT><A HREF="#lbAO">Repair database only</A><DD>
+<DT><A HREF="#lbAP">Repair all</A><DD>
+<DT><A HREF="#lbAQ">Check only apache</A><DD>
+</DL>
+<DT><A HREF="#lbAR">AUTHOR</A><DD>
+<DT><A HREF="#lbAS">SEE ALSO</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 22:11:13 GMT, March 25, 2013
+</BODY>
+</HTML>

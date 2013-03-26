@@ -1,0 +1,19 @@
+#!/bin/sh
+
+fn_simple()
+{
+ $(dirname $0)/admin.sh -M $(dirname $0)/tests/01_simple  "$@"
+ return "$?"
+
+}
+
+fn_launch()
+{
+echo "all is not good"
+fn_simple -A allsys status
+if [ "$?" -eq '0' ] || [ "$?" -eq '3' ]; then
+ return 1
+fi
+echo "Pass"
+return 0
+}
